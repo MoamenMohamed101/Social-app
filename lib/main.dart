@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:social_app/modules/login/login_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,15 +12,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: Colors.blue,
+       // useMaterial3: true,
       ),
-      home: Scaffold(
-        appBar: AppBar(
-          title: const Text('Flutter Demo Home Page'),
-        ),
-        body: const Center(
-          child: Text('Hello World'),
-        ),
-      ),
+      debugShowCheckedModeBanner: false,
+      home: SocialLoginScreen()
     );
   }
 }
