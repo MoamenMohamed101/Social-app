@@ -111,12 +111,12 @@ class SocialRegisterScreen extends StatelessWidget {
                             prefixIcon: Icons.phone,
                             onFieldSubmitted: (value) {
                               if (formKey.currentState!.validate()) {
-                                // SocialRegisterCubit.get(context).userRegister(
-                                //     email: emailController.text,
-                                //     password: passwordController.text,
-                                //     name: nameController.text,
-                                //     phone: phoneController.text
-                                // );
+                                SocialRegisterCubit.get(context).userRegister(
+                                    email: emailController.text,
+                                    password: passwordController.text,
+                                    name: nameController.text,
+                                    phone: phoneController.text
+                                );
                               }
                             }),
                         const SizedBox(
@@ -129,12 +129,12 @@ class SocialRegisterScreen extends StatelessWidget {
                             text: 'register',
                             voidCallback: () {
                               if (formKey.currentState!.validate()) {
-                                // SocialRegisterCubit.get(context).userRegister(
-                                //   email: emailController.text,
-                                //   password: passwordController.text,
-                                //   name: nameController.text,
-                                //   phone: phoneController.text
-                                // );
+                                SocialRegisterCubit.get(context).userRegister(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                  name: nameController.text,
+                                  phone: phoneController.text
+                                );
                               }
                             },
                             width: double.infinity,

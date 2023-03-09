@@ -74,10 +74,10 @@ class SocialLoginScreen extends StatelessWidget {
                             isPassword: isPassword!,
                             iconSuffix: () {},
                             onFieldSubmitted: (value) {
-                              // SocialLoginCubit.get(context).userLogin(
-                              //   email: emailController.text,
-                              //   password: passwordController.text,
-                              // );
+                              SocialLoginCubit.get(context).userLogin(
+                                email: emailController.text,
+                                password: passwordController.text,
+                              );
                             }),
                         const SizedBox(
                           height: 15,
@@ -89,10 +89,10 @@ class SocialLoginScreen extends StatelessWidget {
                             text: 'login',
                             voidCallback: () {
                               if (formKey.currentState!.validate()) {
-                                // SocialLoginCubit.get(context).userLogin(
-                                //   email: emailController.text,
-                                //   password: passwordController.text,
-                                // );
+                                SocialLoginCubit.get(context).userLogin(
+                                  email: emailController.text,
+                                  password: passwordController.text,
+                                );
                               }
                             },
                             width: double.infinity,
@@ -128,7 +128,11 @@ class SocialLoginScreen extends StatelessWidget {
             ),
           );
         },
-        listener: (BuildContext context, Object? state) {  },
+        listener: (BuildContext context, Object? state) {
+          if(state is SocialLoginErrorStates){
+            showToast(state.error, ToastStates.ERROR);
+          }
+        },
       ),
     );
   }
