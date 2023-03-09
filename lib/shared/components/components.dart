@@ -68,7 +68,12 @@ navigateTo({context, widget}) => Navigator.push(
     builder: (context) => widget,
   ),
 );
-
+void NavigateAndFinsh({context, widget}) => Navigator.pushAndRemoveUntil(
+    context,
+    MaterialPageRoute(
+      builder: (context) => widget,
+    ),
+        (Route<dynamic> route) => false);
 showToast(String? message, ToastStates states) => Fluttertoast.showToast(
     msg: message!,
     toastLength: Toast.LENGTH_LONG,

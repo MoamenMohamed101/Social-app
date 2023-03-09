@@ -1,6 +1,7 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/register/cubit/cubit.dart';
 import 'package:social_app/modules/register/cubit/states.dart';
 import 'package:social_app/shared/components/components.dart';
@@ -115,8 +116,7 @@ class SocialRegisterScreen extends StatelessWidget {
                                     email: emailController.text,
                                     password: passwordController.text,
                                     name: nameController.text,
-                                    phone: phoneController.text
-                                );
+                                    phone: phoneController.text);
                               }
                             }),
                         const SizedBox(
@@ -133,7 +133,7 @@ class SocialRegisterScreen extends StatelessWidget {
                                   email: emailController.text,
                                   password: passwordController.text,
                                   name: nameController.text,
-                                  phone: phoneController.text
+                                  phone: phoneController.text,
                                 );
                               }
                             },
@@ -152,8 +152,11 @@ class SocialRegisterScreen extends StatelessWidget {
             );
           },
           listener: (BuildContext context, Object? state) {
-            if (state is SocialRegisterSuccessStates) {
-
+            if (state is SocialCreateUserSuccessStates) {
+              NavigateAndFinsh(
+                context: context,
+                widget: const SocialLayout(),
+              );
             }
           },
         ),

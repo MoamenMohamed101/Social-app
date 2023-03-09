@@ -11,3 +11,10 @@ class SocialRegisterErrorStates extends SocialRegisterStates {
 
   SocialRegisterErrorStates(this.error);
 }
+class SocialCreateUserSuccessStates extends SocialRegisterStates {}
+
+class SocialCreateUserErrorStates extends SocialRegisterStates {
+  final error;
+
+  SocialCreateUserErrorStates(this.error);
+}
