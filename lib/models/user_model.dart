@@ -1,7 +1,8 @@
 class UserModel {
   String? email, password, phone, name;
+  bool? isEmailVerified = false;
 
-  UserModel({this.email, this.password, this.phone, this.name});
+  UserModel({this.email, this.password, this.phone, this.name , this.isEmailVerified});
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
     return UserModel(
@@ -9,6 +10,7 @@ class UserModel {
       password: json["password"],
       phone: json["phone"],
       name: json["name"],
+      isEmailVerified: json["isEmailVerified"],
     );
   }
 
@@ -18,6 +20,7 @@ class UserModel {
       "password": password,
       "phone": phone,
       "name": name,
+      "isEmailVerified": isEmailVerified,
     };
   }
 }

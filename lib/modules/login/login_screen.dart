@@ -1,10 +1,12 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/login/cubit/cubit.dart';
 import 'package:social_app/modules/login/cubit/states.dart';
 import 'package:social_app/modules/register/register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/network/local/cach_helper.dart';
 
 class SocialLoginScreen extends StatelessWidget {
   SocialLoginScreen({Key? key}) : super(key: key);
@@ -12,14 +14,14 @@ class SocialLoginScreen extends StatelessWidget {
   var emailController = TextEditingController();
   var passwordController = TextEditingController();
   bool? isPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
       create: (BuildContext context) => SocialLoginCubit(),
-      child: BlocConsumer<SocialLoginCubit , SocialLoginStates>(
+      child: BlocConsumer<SocialLoginCubit, SocialLoginStates>(
         builder: (BuildContext context, state) {
           return Scaffold(
-            appBar: AppBar(),
             body: Padding(
               padding: const EdgeInsets.all(20.0),
               child: Center(
@@ -113,7 +115,7 @@ class SocialLoginScreen extends StatelessWidget {
                               onPressed: () {
                                 navigateTo(
                                   context: context,
-                                  widget:  SocialRegisterScreen(),
+                                  widget: SocialRegisterScreen(),
                                 );
                               },
                               child: const Text('Register'),
@@ -129,8 +131,18 @@ class SocialLoginScreen extends StatelessWidget {
           );
         },
         listener: (BuildContext context, Object? state) {
-          if(state is SocialLoginErrorStates){
+          if (state is SocialLoginErrorStates) {
             showToast(state.error, ToastStates.ERROR);
+          }
+          if (state is SocialLoginSuccessStates) {
+            //showToast(state.uId, ToastStates.SUCCESS);
+            CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
+              NavigateAndFinsh(context: context, widget: const SocialLayout());
+            }).catchError(
+              (error) {
+                print(error.toString());
+              },
+            );
           }
         },
       ),
