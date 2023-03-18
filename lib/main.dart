@@ -6,13 +6,15 @@ import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/shared/bloc_observer.dart';
 import 'package:social_app/shared/network/local/cach_helper.dart';
 
+import 'shared/components/constants.dart';
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   CacheHelper.init();
   await Firebase.initializeApp();
   Bloc.observer = MyBlocObserver();
   Widget? widget;
-  String? uid = CacheHelper.getData(key: 'uId');
+  uid = CacheHelper.getData(key: 'uId');
 
   if (uid != null) {
     widget = const SocialLayout();

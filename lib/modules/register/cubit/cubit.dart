@@ -14,6 +14,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     String? password,
     String? name,
     String? phone,
+    String? uId
   }) {
     emit(SocialRegisterLoadingStates());
     FirebaseAuth.instance
@@ -25,6 +26,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
           password: password,
           name: name,
           phone: phone,
+          uId: value.user!.uid
         );
         emit(
           SocialRegisterSuccessStates(),
@@ -42,17 +44,18 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   }
 
   void createUser(
-      {String? email, String? password, String? name, String? phone}) {
+      {String? email, String? password, String? name, String? phone,String? uId}) {
     UserModel? userModel = UserModel(
       email: email,
       password: password,
       name: name,
       phone: phone,
-      isEmailVerified: false
+      isEmailVerified: false,
+      uId: uId
     );
     FirebaseFirestore.instance
         .collection('usersData')
-        .doc(name)
+        .doc(uId)
         .set(
           userModel.toJson(),
         )
