@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/shared/styles/icon_broken.dart';
 
 class SocialLayout extends StatelessWidget {
   const SocialLayout({Key? key}) : super(key: key);
@@ -12,36 +13,29 @@ class SocialLayout extends StatelessWidget {
       create: (BuildContext context) => SocialCubit()..getUserData(),
       child: BlocConsumer<SocialCubit, SocialStates>(
         builder: (BuildContext context, state) {
+          var cubit = SocialCubit.get(context);
           return Scaffold(
+            backgroundColor: Colors.white,
             appBar: AppBar(
               backgroundColor: Colors.white,
               elevation: 0.0,
               title: const Text('New Feed'),
             ),
-            body: Column(
-              children: [
-                Container(
-                  color: Colors.amber.withOpacity(.6),
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.info_outline),
-                        const SizedBox(width: 20,),
-                        const Expanded(
-                          child: Text('Please verify your email'),
-                        ),
-                        MaterialButton(
-                          onPressed: () {},
-                          child: const Text(
-                            'SEND',
-                            style: TextStyle(color:  Colors.blue,fontSize: 20),
-                          ),
-                        )
-                      ],
-                    ),
-                  ),
-                )
+            body: cubit.screens[cubit.currentIndex!],
+            bottomNavigationBar: BottomNavigationBar(
+              onTap: (index) {
+                cubit.changeBottomNav(index);
+              },
+              currentIndex: cubit.currentIndex!,
+              items: const [
+                BottomNavigationBarItem(
+                    icon: Icon(IconBroken.Home), label: 'Home'),
+                BottomNavigationBarItem(
+                    icon: Icon(IconBroken.Chat), label: 'Chats'),
+                BottomNavigationBarItem(
+                    icon: Icon(IconBroken.Location), label: 'Users'),
+                BottomNavigationBarItem(
+                    icon: Icon(IconBroken.Setting), label: 'Settings'),
               ],
             ),
           );

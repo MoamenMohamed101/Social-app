@@ -5,6 +5,7 @@ import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/shared/bloc_observer.dart';
 import 'package:social_app/shared/network/local/cach_helper.dart';
+import 'package:social_app/shared/styles/themes.dart';
 
 import 'shared/components/constants.dart';
 
@@ -32,7 +33,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       debugShowCheckedModeBanner: false,
       home: startWidget,
     );
