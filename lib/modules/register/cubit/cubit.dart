@@ -54,8 +54,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
       phone: phone,
       isEmailVerified: false,
       uId: uId,
-      image:
-          'https://www.freepik.com/free-photo/middle-age-sad-upset-man-with-grey-hair-dark-color-shirt-crying-rubbing-his-eye-with-hand-standing-blue-background_26886305.htm?query=man%20with%20purple%20background#from_view=detail_alsolike',
+      image: 'https://www.freepik.com/free-photo/middle-age-sad-upset-man-with-grey-hair-dark-color-shirt-crying-rubbing-his-eye-with-hand-standing-blue-background_26886305.htm?query=man%20with%20purple%20background#from_view=detail_alsolike',
+      cover: 'https://www.freepik.com/free-vector/spring-pink-rose-floral-background-with-watercolor_18919753.htm#query=flower%20background&position=0&from_view=keyword&track=ais',
       bio: 'Flutter Developer',
     );
     FirebaseFirestore.instance

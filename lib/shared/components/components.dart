@@ -48,6 +48,7 @@ defaultButton({
   double? radius = 10.0,
 }) =>
     Container(
+      height: 45,
       width: width,
       decoration: BoxDecoration(
         color: color,

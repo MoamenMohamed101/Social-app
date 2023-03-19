@@ -1,5 +1,5 @@
 class UserModel {
-  String? email, password, phone, name, uId, image, bio;
+  String? email, password, phone, name, uId, image, bio , cover;
   bool? isEmailVerified = false;
 
   UserModel({
@@ -11,6 +11,7 @@ class UserModel {
     this.uId,
     this.image,
     this.bio,
+    this.cover,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {
@@ -23,6 +24,7 @@ class UserModel {
       uId: json["uId"],
       image: json["image"],
       bio: json["bio"],
+      cover: json["cover"],
     );
   }
 
@@ -36,6 +38,7 @@ class UserModel {
       "uId": uId,
       "image": image,
       "bio": bio,
+      "cover": cover,
     };
   }
 }
