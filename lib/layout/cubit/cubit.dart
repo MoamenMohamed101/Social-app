@@ -38,9 +38,19 @@ class SocialCubit extends Cubit<SocialStates> {
     const UsersScreen(),
     const SettingsScreen(),
   ];
+  List<String> titles = [
+    'Home',
+    'Chats',
+    'Users',
+    'Settings',
+  ];
 
   void changeBottomNav(int? index) {
-    currentIndex = index;
-    emit(SocialChangeBottomNav());
+    if(index == 2) {
+      emit(SocialNewPost());
+    } else {
+      currentIndex = index;
+      emit(SocialChangeBottomNav());
+    }
   }
 }
