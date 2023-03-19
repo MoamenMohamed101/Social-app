@@ -4,6 +4,7 @@ import 'package:social_app/layout/cubit/states.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/Chats_screen.dart';
 import 'package:social_app/modules/Feeds_Screen.dart';
+import 'package:social_app/modules/new_post_screen.dart';
 import 'package:social_app/modules/settings_screen.dart';
 import 'package:social_app/modules/users_screen.dart';
 import 'package:social_app/shared/components/constants.dart';
@@ -14,6 +15,14 @@ class SocialCubit extends Cubit<SocialStates> {
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
   int? currentIndex = 0;
+
+  List<String> titles = [
+    'Home',
+    'Chats',
+    'Posts',
+    'Users',
+    'Settings',
+  ];
 
   void getUserData() {
     emit(SocialGetUserLoadingStates());
@@ -31,18 +40,12 @@ class SocialCubit extends Cubit<SocialStates> {
       );
     });
   }
-
   List screens = [
     const FeedsScreen(),
     const ChatsScreen(),
+    const NewPostScreen(),
     const UsersScreen(),
     const SettingsScreen(),
-  ];
-  List<String> titles = [
-    'Home',
-    'Chats',
-    'Users',
-    'Settings',
   ];
 
   void changeBottomNav(int? index) {

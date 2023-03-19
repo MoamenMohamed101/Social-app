@@ -9,25 +9,23 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
 
   static SocialRegisterCubit get(context) => BlocProvider.of(context);
 
-  void userRegister({
-    String? email,
-    String? password,
-    String? name,
-    String? phone,
-    String? uId
-  }) {
+  void userRegister(
+      {String? email,
+      String? password,
+      String? name,
+      String? phone,
+      String? uId}) {
     emit(SocialRegisterLoadingStates());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email!, password: password!)
         .then(
       (value) {
         createUser(
-          email: email,
-          password: password,
-          name: name,
-          phone: phone,
-          uId: value.user!.uid
-        );
+            email: email,
+            password: password,
+            name: name,
+            phone: phone,
+            uId: value.user!.uid);
         emit(
           SocialRegisterSuccessStates(),
         );
@@ -44,14 +42,21 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   }
 
   void createUser(
-      {String? email, String? password, String? name, String? phone,String? uId}) {
+      {String? email,
+      String? password,
+      String? name,
+      String? phone,
+      String? uId}) {
     UserModel? userModel = UserModel(
       email: email,
       password: password,
       name: name,
       phone: phone,
       isEmailVerified: false,
-      uId: uId
+      uId: uId,
+      image:
+          'https://www.freepik.com/free-photo/middle-age-sad-upset-man-with-grey-hair-dark-color-shirt-crying-rubbing-his-eye-with-hand-standing-blue-background_26886305.htm?query=man%20with%20purple%20background#from_view=detail_alsolike',
+      bio: 'Flutter Developer',
     );
     FirebaseFirestore.instance
         .collection('usersData')
