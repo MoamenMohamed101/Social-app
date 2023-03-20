@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/shared/bloc_observer.dart';
@@ -32,11 +33,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      debugShowCheckedModeBanner: false,
-      home: startWidget,
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => SocialCubit()),
+      ],
+      child: MaterialApp(
+        theme: lightTheme,
+        darkTheme: darkTheme,
+        debugShowCheckedModeBanner: false,
+        home: startWidget,
+      ),
     );
   }
 }
