@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/cubit/states.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/styles/icon_broken.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
@@ -61,10 +62,8 @@ class SettingsScreen extends StatelessWidget {
                   style: Theme.of(context).textTheme.bodyText1),
               Text(
                 '${model.bio}',
-                style: Theme.of(context)
-                    .textTheme
-                    .caption!
-                    .copyWith(height: 1.9),
+                style:
+                    Theme.of(context).textTheme.caption!.copyWith(height: 1.9),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -92,10 +91,10 @@ class SettingsScreen extends StatelessWidget {
                       child: InkWell(
                         child: Column(
                           children: [
-                            Text('100',
+                            Text('265',
                                 style: Theme.of(context).textTheme.subtitle2),
                             Text(
-                              'posts',
+                              'Photos',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
@@ -110,10 +109,10 @@ class SettingsScreen extends StatelessWidget {
                       child: InkWell(
                         child: Column(
                           children: [
-                            Text('100',
+                            Text('10k',
                                 style: Theme.of(context).textTheme.subtitle2),
                             Text(
-                              'posts',
+                              'followers',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
@@ -128,10 +127,10 @@ class SettingsScreen extends StatelessWidget {
                       child: InkWell(
                         child: Column(
                           children: [
-                            Text('100',
+                            Text('64',
                                 style: Theme.of(context).textTheme.subtitle2),
                             Text(
-                              'posts',
+                              'followings',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
@@ -145,12 +144,23 @@ class SettingsScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              defaultButton(
-                voidCallback: () {},
-                text: 'Edit Profile',
-                width: double.infinity,
-                radius: 5,
-              )
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: () {},
+                      child: const Text('Add Photos'),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 10,
+                  ),
+                  OutlinedButton(
+                    onPressed: () {},
+                    child: const Icon(IconBroken.Edit, size: 16),
+                  ),
+                ],
+              ),
             ],
           ),
         );
