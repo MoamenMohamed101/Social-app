@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/shared/styles/icon_broken.dart';
 
 myDivider() => Container(height: 1, width: double.infinity, color: Colors.grey);
 
@@ -64,17 +65,19 @@ defaultButton({
     );
 
 navigateTo({context, widget}) => Navigator.push(
-  context,
-  MaterialPageRoute(
-    builder: (context) => widget,
-  ),
-);
+      context,
+      MaterialPageRoute(
+        builder: (context) => widget,
+      ),
+    );
+
 void NavigateAndFinsh({context, widget}) => Navigator.pushAndRemoveUntil(
     context,
     MaterialPageRoute(
       builder: (context) => widget,
     ),
-        (Route<dynamic> route) => false);
+    (Route<dynamic> route) => false);
+
 showToast(String? message, ToastStates states) => Fluttertoast.showToast(
     msg: message!,
     toastLength: Toast.LENGTH_LONG,
@@ -101,3 +104,20 @@ Color chooseToastColor(ToastStates states) {
   }
   return color;
 }
+
+defaultAppBar({
+  String? title,
+  @required BuildContext? context,
+  List<Widget> action = const [],
+}) =>
+    AppBar(
+      actions: action,
+      title: Text(title!),
+      titleSpacing: 5.0,
+      leading: IconButton(
+        onPressed: () {
+          Navigator.pop(context!);
+        },
+        icon: const Icon(IconBroken.Arrow___Left_2),
+      ),
+    );

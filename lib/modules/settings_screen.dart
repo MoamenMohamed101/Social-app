@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/modules/edit_profile_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
@@ -17,44 +18,44 @@ class SettingsScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              SizedBox(
-                height: 185,
-                child: Stack(
-                  alignment: Alignment.bottomCenter,
-                  children: [
-                    Align(
-                      alignment: Alignment.topCenter,
-                      child: Container(
-                        height: 140,
-                        width: double.infinity,
-                        decoration: BoxDecoration(
-                          borderRadius: const BorderRadius.only(
-                            topLeft: Radius.circular(4),
-                            topRight: Radius.circular(4),
-                          ),
-                          image: DecorationImage(
-                            image: NetworkImage(
-                              '${model!.cover}',
+                SizedBox(
+                  height: 185,
+                  child: Stack(
+                    alignment: Alignment.bottomCenter,
+                    children: [
+                      Align(
+                        alignment: Alignment.topCenter,
+                        child: Container(
+                          height: 140,
+                          width: double.infinity,
+                          decoration: BoxDecoration(
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(4),
+                              topRight: Radius.circular(4),
                             ),
-                            fit: BoxFit.cover,
+                            image: DecorationImage(
+                              image: NetworkImage(
+                                '${model!.cover}',
+                              ),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    CircleAvatar(
-                      radius: 64,
-                      backgroundColor:
-                          Theme.of(context).scaffoldBackgroundColor,
-                      child: CircleAvatar(
-                        radius: 60,
-                        backgroundImage: NetworkImage(
-                          '${model.image}',
+                      CircleAvatar(
+                        radius: 64,
+                        backgroundColor:
+                            Theme.of(context).scaffoldBackgroundColor,
+                        child: CircleAvatar(
+                          radius: 60,
+                          backgroundImage: NetworkImage(
+                            '${model.image}',
+                          ),
                         ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-              ),
               const SizedBox(
                 height: 10,
               ),
@@ -156,7 +157,12 @@ class SettingsScreen extends StatelessWidget {
                     width: 10,
                   ),
                   OutlinedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      navigateTo(
+                        context: context,
+                        widget: const EditProfileScreen(),
+                      );
+                    },
                     child: const Icon(IconBroken.Edit, size: 16),
                   ),
                 ],
