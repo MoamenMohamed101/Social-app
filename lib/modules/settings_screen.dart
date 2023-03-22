@@ -160,7 +160,7 @@ class SettingsScreen extends StatelessWidget {
                     onPressed: () {
                       navigateTo(
                         context: context,
-                        widget: const EditProfileScreen(),
+                        widget: EditProfileScreen(),
                       );
                     },
                     child: const Icon(IconBroken.Edit, size: 16),

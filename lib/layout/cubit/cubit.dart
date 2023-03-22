@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:social_app/layout/cubit/states.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/Chats_screen.dart';
@@ -44,6 +46,7 @@ class SocialCubit extends Cubit<SocialStates> {
       );
     });
   }
+
   List screens = [
     const FeedsScreen(),
     const ChatsScreen(),
@@ -53,11 +56,38 @@ class SocialCubit extends Cubit<SocialStates> {
   ];
 
   void changeBottomNav(int? index) {
-    if(index == 2) {
+    if (index == 2) {
       emit(SocialNewPost());
     } else {
       currentIndex = index;
       emit(SocialChangeBottomNav());
+    }
+  }
+
+  File? profileImage;
+  var picker = ImagePicker();
+
+  Future<void> getProfileImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      profileImage = File(pickedFile.path);
+      emit(SocialProfileImagePickedSuccessStates());
+    } else {
+      print('No image selected');
+      emit(SocialProfileImagePickedErrorStates());
+    }
+  }
+
+  File? coverImage;
+
+  Future<void> getCoverImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      coverImage = File(pickedFile.path);
+      emit(SocialCoverImagePickedSuccessStates());
+    } else {
+      print('No image selected');
+      emit(SocialCoverImagePickedErrorStates());
     }
   }
 }
