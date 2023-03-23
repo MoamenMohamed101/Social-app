@@ -10,6 +10,7 @@ import 'package:social_app/modules/new_post_screen.dart';
 import 'package:social_app/modules/settings_screen.dart';
 import 'package:social_app/modules/users_screen.dart';
 import 'package:social_app/shared/components/constants.dart';
+import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialStates> {
   SocialCubit() : super(SocialInitialStates());
@@ -89,5 +90,17 @@ class SocialCubit extends Cubit<SocialStates> {
       print('No image selected');
       emit(SocialCoverImagePickedErrorStates());
     }
+  }
+
+  void uploadProfileImage() {
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.parse(profileImage!.path).pathSegments.last}')
+        .putFile(profileImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        print(value);
+      }).catchError((error) {});
+    }).catchError((error) {});
   }
 }

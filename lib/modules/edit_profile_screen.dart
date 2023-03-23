@@ -29,7 +29,9 @@ class EditProfileScreen extends StatelessWidget {
             title: 'Edit Post',
             action: [
               TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  cubit.uploadProfileImage();
+                },
                 child: const Text(
                   'UPDATE',
                   style: TextStyle(fontSize: 17),
