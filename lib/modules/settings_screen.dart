@@ -18,44 +18,44 @@ class SettingsScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-                SizedBox(
-                  height: 185,
-                  child: Stack(
-                    alignment: Alignment.bottomCenter,
-                    children: [
-                      Align(
-                        alignment: Alignment.topCenter,
-                        child: Container(
-                          height: 140,
-                          width: double.infinity,
-                          decoration: BoxDecoration(
-                            borderRadius: const BorderRadius.only(
-                              topLeft: Radius.circular(4),
-                              topRight: Radius.circular(4),
-                            ),
-                            image: DecorationImage(
-                              image: NetworkImage(
-                                '${model!.cover}',
+              SizedBox(
+                height: 185,
+                child: Stack(
+                  alignment: Alignment.bottomCenter,
+                  children: [
+                    Align(
+                      alignment: Alignment.topCenter,
+                      child: Container(
+                        height: 140,
+                        width: double.infinity,
+                        decoration: BoxDecoration(
+                          borderRadius: const BorderRadius.only(
+                            topLeft: Radius.circular(4),
+                            topRight: Radius.circular(4),
+                          ),
+                          image: DecorationImage(
+                            image: NetworkImage(
+                                    '${model!.cover}',
+                                  ),
+                            fit: BoxFit.cover,
+                          ),
+                        ),
+                      ),
+                    ),
+                    CircleAvatar(
+                      radius: 64,
+                      backgroundColor:
+                          Theme.of(context).scaffoldBackgroundColor,
+                      child: CircleAvatar(
+                        radius: 60,
+                        backgroundImage:NetworkImage(
+                                '${model.image}',
                               ),
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                        ),
                       ),
-                      CircleAvatar(
-                        radius: 64,
-                        backgroundColor:
-                            Theme.of(context).scaffoldBackgroundColor,
-                        child: CircleAvatar(
-                          radius: 60,
-                          backgroundImage: NetworkImage(
-                            '${model.image}',
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
+                    ),
+                  ],
                 ),
+              ),
               const SizedBox(
                 height: 10,
               ),

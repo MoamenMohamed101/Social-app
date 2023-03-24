@@ -9,23 +9,25 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
 
   static SocialRegisterCubit get(context) => BlocProvider.of(context);
 
-  void userRegister(
-      {String? email,
-      String? password,
-      String? name,
-      String? phone,
-      String? uId}) {
+  void userRegister({
+    String? email,
+    String? password,
+    String? name,
+    String? phone,
+    // String? uId,
+  }) {
     emit(SocialRegisterLoadingStates());
     FirebaseAuth.instance
         .createUserWithEmailAndPassword(email: email!, password: password!)
         .then(
       (value) {
         createUser(
-            email: email,
-            password: password,
-            name: name,
-            phone: phone,
-            uId: value.user!.uid);
+          email: email,
+          password: password,
+          name: name,
+          phone: phone,
+          uId: value.user!.uid,
+        );
         emit(
           SocialRegisterSuccessStates(),
         );
@@ -41,12 +43,13 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     );
   }
 
-  void createUser(
-      {String? email,
-      String? password,
-      String? name,
-      String? phone,
-      String? uId}) {
+  void createUser({
+    String? email,
+    String? password,
+    String? name,
+    String? phone,
+    String? uId,
+  }) {
     UserModel? userModel = UserModel(
       email: email,
       password: password,
@@ -54,8 +57,10 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
       phone: phone,
       isEmailVerified: false,
       uId: uId,
-      image: 'https://www.freepik.com/free-photo/middle-age-sad-upset-man-with-grey-hair-dark-color-shirt-crying-rubbing-his-eye-with-hand-standing-blue-background_26886305.htm?query=man%20with%20purple%20background#from_view=detail_alsolike',
-      cover: 'https://www.freepik.com/free-vector/spring-pink-rose-floral-background-with-watercolor_18919753.htm#query=flower%20background&position=0&from_view=keyword&track=ais',
+      image:
+          'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.pngplay.com%2Fwp-content%2Fuploads%2F12%2FUser-Avatar-Profile-PNG-Free-File-Download.png&tbnid=10gbQCyo1jc3lM&vet=12ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg..i&imgrefurl=https%3A%2F%2Fwww.pngplay.com%2Far%2Fimage%2F325494&docid=PshJLLfKxXEEXM&w=2601&h=3023&q=profile%20avatar%20images&ved=2ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg',
+      cover:
+          'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.pngplay.com%2Fwp-content%2Fuploads%2F12%2FUser-Avatar-Profile-PNG-Free-File-Download.png&tbnid=10gbQCyo1jc3lM&vet=12ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg..i&imgrefurl=https%3A%2F%2Fwww.pngplay.com%2Far%2Fimage%2F325494&docid=PshJLLfKxXEEXM&w=2601&h=3023&q=profile%20avatar%20images&ved=2ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg',
       bio: 'Flutter Developer',
     );
     FirebaseFirestore.instance
@@ -63,6 +68,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         .doc(uId)
         .set(
           userModel.toJson(),
+          //SetOptions(merge: true)
         )
         .then((value) {
       emit(SocialCreateUserSuccessStates());
