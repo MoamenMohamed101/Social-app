@@ -89,9 +89,14 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-  String profileImageUrl = '';
+  // String profileImageUrl = '';
 
-  void uploadProfileImage() {
+  void uploadProfileImage({
+    @required String? name,
+    @required String? phone,
+    @required String? bio,
+  }) {
+    emit(SocialUserUpdateLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.parse(profileImage!.path).pathSegments.last}')
@@ -99,8 +104,14 @@ class SocialCubit extends Cubit<SocialStates> {
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         print(value);
-        profileImageUrl = value;
-        emit(SocialUploadProfileImageSuccessStates());
+        //profileImageUrl = value;
+        updateUserData(
+          name: name,
+          phone: phone,
+          bio: bio,
+          image: value,
+        );
+       // emit(SocialUploadProfileImageSuccessStates());
       }).catchError((error) {
         emit(SocialUploadProfileImageErrorStates());
       });
@@ -109,18 +120,25 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  String coverImageUrl = '';
-
-  void uploadCoverImage() {
+  void uploadCoverImage({
+    @required String? name,
+    @required String? phone,
+    @required String? bio,
+  }) {
+    emit(SocialUserUpdateLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
         .child('users/${Uri.parse(coverImage!.path).pathSegments.last}')
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        print(value);
-        coverImageUrl = value;
-        emit(SocialUploadCoverImageSuccessStates());
+        updateUserData(
+          name: name,
+          phone: phone,
+          bio: bio,
+          cover: value,
+        );
+        //emit(SocialUploadCoverImageSuccessStates());
       }).catchError((error) {
         emit(SocialUploadCoverImageErrorStates());
       });
@@ -129,32 +147,34 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
-  void updateUserImage({
-    @required String? name,
-    @required String? phone,
-    @required String? bio,
-  }) {
-    emit(SocialUserUpdateLoadingStates());
-    if (profileImage != null) {
-      uploadProfileImage();
-    } else if (coverImage != null) {
-      uploadCoverImage();
-    } else if (profileImage != null && coverImage != null) {
-    } else {
-      updateUserData(name: name, phone: phone, bio: bio);
-    }
-  }
+  // void updateUserImage({
+  //   @required String? name,
+  //   @required String? phone,
+  //   @required String? bio,
+  // }) {
+  //   emit(SocialUserUpdateLoadingStates());
+  //   if (profileImage != null) {
+  //     uploadProfileImage();
+  //   } else if (coverImage != null) {
+  //     uploadCoverImage();
+  //   } else if (profileImage != null && coverImage != null) {
+  //   } else {
+  //     updateUserData(name: name, phone: phone, bio: bio);
+  //   }
+  // }
 
   updateUserData({
     @required String? name,
     @required String? phone,
     @required String? bio,
+    String? image,
+    String? cover,
   }) {
     UserModel? model = UserModel(
       name: name,
       phone: phone,
-      cover: userModel!.cover,
-      image: userModel!.image,
+      cover: cover ?? userModel!.cover,
+      image: image ?? userModel!.image,
       email: userModel!.email,
       isEmailVerified: false,
       bio: bio,

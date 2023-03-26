@@ -53,9 +53,9 @@ class EditProfileScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: Column(
                 children: [
-                  if(state is SocialUserUpdateLoadingStates)
+                  if (state is SocialUserUpdateLoadingStates)
                     const LinearProgressIndicator(),
-                  if(state is SocialUserUpdateLoadingStates)
+                  if (state is SocialUserUpdateLoadingStates)
                     const SizedBox(
                       height: 20,
                     ),
@@ -82,7 +82,8 @@ class EditProfileScreen extends StatelessWidget {
                                         ? NetworkImage(
                                             '${model.cover}',
                                           )
-                                        : FileImage(coverImage) as ImageProvider,
+                                        : FileImage(coverImage)
+                                            as ImageProvider,
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -132,6 +133,64 @@ class EditProfileScreen extends StatelessWidget {
                   const SizedBox(
                     height: 20,
                   ),
+                  if (cubit.coverImage != null || cubit.profileImage != null)
+                    Row(
+                      children: [
+                        if (cubit.profileImage != null)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                defaultButton(
+                                    voidCallback: () {
+                                      cubit.uploadProfileImage(
+                                          name: nameController.text,
+                                          phone: phoneController.text,
+                                          bio: bioController.text);
+                                    },
+                                    text: 'upload profile',
+                                    isUpperCase: false,
+                                    radius: 5,
+                                    width: double.infinity),
+                                // if (state is SocialUserUpdateLoadingStates)
+                                //   const SizedBox(
+                                //     height: 5,
+                                //   ),
+                                // const LinearProgressIndicator()
+                              ],
+                            ),
+                          ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        if (cubit.coverImage != null)
+                          Expanded(
+                            child: Column(
+                              children: [
+                                defaultButton(
+                                    voidCallback: () {
+                                      cubit.uploadCoverImage(
+                                          name: nameController.text,
+                                          phone: phoneController.text,
+                                          bio: bioController.text);
+                                    },
+                                    text: 'upload cover',
+                                    isUpperCase: false,
+                                    radius: 5,
+                                    width: double.infinity),
+                                // if (state is SocialUserUpdateLoadingStates)
+                                //   const SizedBox(
+                                //     height: 5,
+                                //   ),
+                                // const LinearProgressIndicator()
+                              ],
+                            ),
+                          ),
+                      ],
+                    ),
+                  if (cubit.coverImage != null || cubit.profileImage != null)
+                    const SizedBox(
+                      height: 20,
+                    ),
                   defaultFormField(
                     controller: nameController,
                     keyboard: TextInputType.name,
