@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/models/post_model.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/Chats_screen.dart';
 import 'package:social_app/modules/Feeds_Screen.dart';
@@ -18,7 +19,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
-  int? currentIndex = 4;
+  int? currentIndex = 0;
 
   List<String> titles = [
     'Home',
@@ -28,9 +29,9 @@ class SocialCubit extends Cubit<SocialStates> {
     'Settings',
   ];
 
-   getUserData() {
+  getUserData() {
     emit(SocialGetUserLoadingStates());
-     FirebaseFirestore.instance
+    FirebaseFirestore.instance
         .collection('usersData')
         .doc(uid)
         .get()
@@ -89,7 +90,6 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-
   void uploadProfileImage({
     @required String? name,
     @required String? phone,
@@ -98,7 +98,10 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialUserUpdateLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.parse(profileImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .parse(profileImage!.path)
+        .pathSegments
+        .last}')
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -125,7 +128,10 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialUserUpdateLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.parse(coverImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .parse(coverImage!.path)
+        .pathSegments
+        .last}')
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -182,8 +188,8 @@ class SocialCubit extends Cubit<SocialStates> {
         .collection('usersData')
         .doc(model.uId)
         .update(
-          model.toJson(),
-        )
+      model.toJson(),
+    )
         .then((value) {
       getUserData();
     }).catchError((error) {
@@ -204,25 +210,53 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialCreateImagePickedErrorStates());
     }
   }
+
   void uploadPostImage({
-    @required String? name,
-    @required String? uId,
-    @required String? image,
     @required String? text,
     @required String? dateTime,
   }) {
     emit(SocialCreatePostLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri.parse(createPostImage!.path).pathSegments.last}')
+        .child('users/${Uri
+        .parse(createPostImage!.path)
+        .pathSegments
+        .last}')
         .putFile(createPostImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        //emit(SocialUploadCoverImageSuccessStates());
+        createPost(dateTime: dateTime, text: text, postImage: value);
       }).catchError((error) {
         emit(SocialCreatePostErrorStates());
       });
     }).catchError((error) {
+      emit(SocialCreatePostErrorStates());
+    });
+  }
+
+  createPost({
+    @required String? dateTime,
+    @required String? text,
+    @required String? postImage,
+  }) {
+    PostModel? model = PostModel(
+        name: userModel!.name,
+        dataTime: dateTime,
+        image: userModel!.image,
+        uId: userModel!.uId,
+        postImage: postImage ?? '',
+        text: text
+    );
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc('1')
+        .set(
+      model.toJson(),
+    )
+        .then((value) {
+          emit(SocialCreatePostSuccessStates());
+    }).catchError((error) {
+      print(error.toString());
       emit(SocialCreatePostErrorStates());
     });
   }
