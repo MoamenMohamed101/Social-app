@@ -35,8 +35,8 @@ class SettingsScreen extends StatelessWidget {
                           ),
                           image: DecorationImage(
                             image: NetworkImage(
-                                    '${model!.cover}',
-                                  ),
+                              '${model!.cover}',
+                            ),
                             fit: BoxFit.cover,
                           ),
                         ),
@@ -48,9 +48,7 @@ class SettingsScreen extends StatelessWidget {
                           Theme.of(context).scaffoldBackgroundColor,
                       child: CircleAvatar(
                         radius: 60,
-                        backgroundImage:NetworkImage(
-                                '${model.image}',
-                              ),
+                        backgroundImage: NetworkImage('${model.image}'),
                       ),
                     ),
                   ],
@@ -60,11 +58,13 @@ class SettingsScreen extends StatelessWidget {
                 height: 10,
               ),
               Text('${model.name}',
-                  style: Theme.of(context).textTheme.bodyText1),
+                  style: Theme.of(context).textTheme.bodyLarge),
               Text(
                 '${model.bio}',
-                style:
-                    Theme.of(context).textTheme.caption!.copyWith(height: 1.9),
+                style: Theme.of(context)
+                    .textTheme
+                    .bodySmall!
+                    .copyWith(height: 1.9),
               ),
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 20),
@@ -75,12 +75,12 @@ class SettingsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Text('100',
-                                style: Theme.of(context).textTheme.subtitle2),
+                                style: Theme.of(context).textTheme.titleSmall),
                             Text(
                               'posts',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(height: 1.5),
                             ),
                           ],
@@ -93,12 +93,12 @@ class SettingsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Text('265',
-                                style: Theme.of(context).textTheme.subtitle2),
+                                style: Theme.of(context).textTheme.titleSmall),
                             Text(
                               'Photos',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(height: 1.5),
                             ),
                           ],
@@ -111,12 +111,12 @@ class SettingsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Text('10k',
-                                style: Theme.of(context).textTheme.subtitle2),
+                                style: Theme.of(context).textTheme.titleSmall),
                             Text(
                               'followers',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(height: 1.5),
                             ),
                           ],
@@ -129,12 +129,12 @@ class SettingsScreen extends StatelessWidget {
                         child: Column(
                           children: [
                             Text('64',
-                                style: Theme.of(context).textTheme.subtitle2),
+                                style: Theme.of(context).textTheme.titleSmall),
                             Text(
                               'followings',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(height: 1.5),
                             ),
                           ],

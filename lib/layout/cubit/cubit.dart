@@ -18,7 +18,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
-  int? currentIndex = 0;
+  int? currentIndex = 4;
 
   List<String> titles = [
     'Home',
@@ -28,9 +28,9 @@ class SocialCubit extends Cubit<SocialStates> {
     'Settings',
   ];
 
-  void getUserData() {
+   getUserData() {
     emit(SocialGetUserLoadingStates());
-    FirebaseFirestore.instance
+     FirebaseFirestore.instance
         .collection('usersData')
         .doc(uid)
         .get()
@@ -89,7 +89,6 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
-  // String profileImageUrl = '';
 
   void uploadProfileImage({
     @required String? name,
@@ -104,14 +103,12 @@ class SocialCubit extends Cubit<SocialStates> {
         .then((value) {
       value.ref.getDownloadURL().then((value) {
         print(value);
-        //profileImageUrl = value;
         updateUserData(
           name: name,
           phone: phone,
           bio: bio,
           image: value,
         );
-       // emit(SocialUploadProfileImageSuccessStates());
       }).catchError((error) {
         emit(SocialUploadProfileImageErrorStates());
       });
@@ -192,6 +189,41 @@ class SocialCubit extends Cubit<SocialStates> {
     }).catchError((error) {
       print(error.toString());
       emit(SocialUserUpdateErrorStates());
+    });
+  }
+
+  File? createPostImage;
+
+  Future<void> getPostImage() async {
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+    if (pickedFile != null) {
+      createPostImage = File(pickedFile.path);
+      emit(SocialCreateImagePickedSuccessStates());
+    } else {
+      print('No image selected');
+      emit(SocialCreateImagePickedErrorStates());
+    }
+  }
+  void uploadPostImage({
+    @required String? name,
+    @required String? uId,
+    @required String? image,
+    @required String? text,
+    @required String? dateTime,
+  }) {
+    emit(SocialCreatePostLoadingStates());
+    firebase_storage.FirebaseStorage.instance
+        .ref()
+        .child('users/${Uri.parse(createPostImage!.path).pathSegments.last}')
+        .putFile(createPostImage!)
+        .then((value) {
+      value.ref.getDownloadURL().then((value) {
+        //emit(SocialUploadCoverImageSuccessStates());
+      }).catchError((error) {
+        emit(SocialCreatePostErrorStates());
+      });
+    }).catchError((error) {
+      emit(SocialCreatePostErrorStates());
     });
   }
 }

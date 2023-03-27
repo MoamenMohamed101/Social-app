@@ -14,7 +14,6 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     String? password,
     String? name,
     String? phone,
-    // String? uId,
   }) {
     emit(SocialRegisterLoadingStates());
     FirebaseAuth.instance
@@ -58,17 +57,16 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
       isEmailVerified: false,
       uId: uId,
       image:
-          'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.pngplay.com%2Fwp-content%2Fuploads%2F12%2FUser-Avatar-Profile-PNG-Free-File-Download.png&tbnid=10gbQCyo1jc3lM&vet=12ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg..i&imgrefurl=https%3A%2F%2Fwww.pngplay.com%2Far%2Fimage%2F325494&docid=PshJLLfKxXEEXM&w=2601&h=3023&q=profile%20avatar%20images&ved=2ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg',
+          'https://i.stack.imgur.com/l60Hf.png',
       cover:
-          'https://www.google.com/imgres?imgurl=https%3A%2F%2Fwww.pngplay.com%2Fwp-content%2Fuploads%2F12%2FUser-Avatar-Profile-PNG-Free-File-Download.png&tbnid=10gbQCyo1jc3lM&vet=12ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg..i&imgrefurl=https%3A%2F%2Fwww.pngplay.com%2Far%2Fimage%2F325494&docid=PshJLLfKxXEEXM&w=2601&h=3023&q=profile%20avatar%20images&ved=2ahUKEwjOgqGFsfT9AhUhokwKHV_GB-EQMygdegUIARCLAg',
-      bio: 'Flutter Developer',
+          'https://marketplace.canva.com/EAEmBit3KfU/1/0/1600w/canva-black-flatlay-photo-motivational-finance-quote-facebook-cover-myVl9DXwcjQ.jpg',
+      bio: 'Write your bio ...',
     );
     FirebaseFirestore.instance
         .collection('usersData')
         .doc(uId)
         .set(
           userModel.toJson(),
-          //SetOptions(merge: true)
         )
         .then((value) {
       emit(SocialCreateUserSuccessStates());

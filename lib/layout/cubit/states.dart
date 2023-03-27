@@ -35,3 +35,13 @@ class SocialUploadCoverImageErrorStates extends SocialStates {}
 class SocialUserUpdateErrorStates extends SocialStates {}
 
 class SocialUserUpdateLoadingStates extends SocialStates {}
+// create post
+class SocialCreatePostErrorStates extends SocialStates {}
+
+class SocialCreatePostLoadingStates extends SocialStates {}
+
+class SocialCreatePostSuccessStates extends SocialStates {}
+
+class SocialCreateImagePickedSuccessStates extends SocialStates {}
+
+class SocialCreateImagePickedErrorStates extends SocialStates {}
