@@ -49,7 +49,7 @@ class SocialCubit extends Cubit<SocialStates> {
   List screens = [
     const FeedsScreen(),
     const ChatsScreen(),
-    const NewPostScreen(),
+    NewPostScreen(),
     const UsersScreen(),
     const SettingsScreen(),
   ];
@@ -199,7 +199,10 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   File? createPostImage;
-
+  void removePostImage(){
+    createPostImage = null;
+    emit(SocialRemovePostImageSuccessStates());
+  }
   Future<void> getPostImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -237,8 +240,9 @@ class SocialCubit extends Cubit<SocialStates> {
   createPost({
     @required String? dateTime,
     @required String? text,
-    @required String? postImage,
+    String? postImage,
   }) {
+    emit(SocialCreatePostLoadingStates());
     PostModel? model = PostModel(
         name: userModel!.name,
         dataTime: dateTime,
@@ -249,8 +253,7 @@ class SocialCubit extends Cubit<SocialStates> {
     );
     FirebaseFirestore.instance
         .collection('posts')
-        .doc('1')
-        .set(
+        .add(
       model.toJson(),
     )
         .then((value) {
