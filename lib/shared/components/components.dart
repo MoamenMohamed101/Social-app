@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:social_app/layout/cubit/cubit.dart';
+import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
 myDivider() => Container(height: 1, width: double.infinity, color: Colors.grey);

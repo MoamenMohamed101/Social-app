@@ -9,9 +9,9 @@ class UserModel {
     this.name,
     this.isEmailVerified,
     this.uId,
-    required this.image,
+    this.image,
     this.bio,
-    required this.cover,
+    this.cover,
   });
 
   factory UserModel.fromJson(Map<String, dynamic> json) {

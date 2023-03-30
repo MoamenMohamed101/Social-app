@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:image_picker/image_picker.dart';
@@ -8,10 +9,13 @@ import 'package:social_app/models/post_model.dart';
 import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/Chats_screen.dart';
 import 'package:social_app/modules/Feeds_Screen.dart';
+import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/modules/new_post_screen.dart';
 import 'package:social_app/modules/settings_screen.dart';
 import 'package:social_app/modules/users_screen.dart';
+import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/components/constants.dart';
+import 'package:social_app/shared/network/local/cach_helper.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 
 class SocialCubit extends Cubit<SocialStates> {
@@ -261,6 +265,19 @@ class SocialCubit extends Cubit<SocialStates> {
     }).catchError((error) {
       print(error.toString());
       emit(SocialCreatePostErrorStates());
+    });
+  }
+
+  // signOut
+  void signOut(context) {
+    FirebaseAuth.instance.signOut().then((value) {
+      CacheHelper.removeData('uId')!.then((value) {
+        navigateTo(context: context,widget:  SocialLoginScreen());
+      });
+      emit(SocialSignOutSuccessStates());
+    }).catchError((error) {
+      print(error.toString());
+      emit(SocialSignOutErrorStates());
     });
   }
 }

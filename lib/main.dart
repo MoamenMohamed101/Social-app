@@ -7,7 +7,6 @@ import 'package:social_app/modules/login/login_screen.dart';
 import 'package:social_app/shared/bloc_observer.dart';
 import 'package:social_app/shared/network/local/cach_helper.dart';
 import 'package:social_app/shared/styles/themes.dart';
-
 import 'shared/components/constants.dart';
 
 void main() async {

@@ -48,3 +48,7 @@ class SocialCreateImagePickedSuccessStates extends SocialStates {}
 class SocialRemovePostImageSuccessStates extends SocialStates {}
 
 class SocialCreateImagePickedErrorStates extends SocialStates {}
+
+class SocialSignOutSuccessStates extends SocialStates {}
+
+class SocialSignOutErrorStates extends SocialStates {}
