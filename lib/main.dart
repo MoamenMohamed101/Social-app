@@ -35,7 +35,9 @@ class MyApp extends StatelessWidget {
     return MultiBlocProvider(
       providers: [
         BlocProvider(
-          create: (context) => SocialCubit()..getUserData(),
+          create: (context) {
+            return SocialCubit()..getUserData();
+          },
         ),
       ],
       child: MaterialApp(

@@ -3,13 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
 import 'package:social_app/layout/cubit/states.dart';
+import 'package:social_app/models/user_model.dart';
 import 'package:social_app/modules/edit_profile_screen.dart';
 import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({Key? key}) : super(key: key);
-// How to refresh the screen when the user changes the profile picture
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
