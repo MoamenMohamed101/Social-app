@@ -10,14 +10,14 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
   static SocialRegisterCubit get(context) => BlocProvider.of(context);
 
   void userRegister({
-    String? email,
-    String? password,
-    String? name,
-    String? phone,
+    required String email,
+    required String password,
+    required String name,
+    required String phone,
   }) {
     emit(SocialRegisterLoadingStates());
     FirebaseAuth.instance
-        .createUserWithEmailAndPassword(email: email!, password: password!)
+        .createUserWithEmailAndPassword(email: email, password: password)
         .then(
       (value) {
         createUser(
@@ -28,8 +28,12 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
           uId: value.user!.uid,
         );
       },
-    ).catchError(
-      (error) {
+    ).catchError((error) {
+      if (error.code == 'weak-password') {
+      error = 'The password provided is too weak.';
+      } else if (error.code == 'email-already-in-use') {
+     error = 'The account already exists for that email.';
+      }
         emit(
           SocialRegisterErrorStates(
             error.toString(),
@@ -38,7 +42,7 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
       },
     );
   }
-
+/// todo fix this issue
   void createUser({
     String? email,
     String? password,
@@ -64,9 +68,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
         .doc(uId)
         .set(
           userModel.toJson(),
-        )
-        .then((value) {
-      emit(SocialCreateUserSuccessStates());
+        ).then((value) {
+      emit(SocialCreateUserSuccessStates(uId!));
     }).catchError((error) {
       emit(
         SocialCreateUserErrorStates(error.toString()),

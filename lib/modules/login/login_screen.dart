@@ -6,6 +6,7 @@ import 'package:social_app/modules/login/cubit/cubit.dart';
 import 'package:social_app/modules/login/cubit/states.dart';
 import 'package:social_app/modules/register/register_screen.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/network/local/cach_helper.dart';
 
 class SocialLoginScreen extends StatelessWidget {
@@ -89,9 +90,9 @@ class SocialLoginScreen extends StatelessWidget {
                           builder: (context) => defaultButton(
                             color: Colors.blue,
                             text: 'login',
-                            voidCallback: () {
+                            voidCallback: () async {
                               if (formKey.currentState!.validate()) {
-                                SocialLoginCubit.get(context).userLogin(
+                                await SocialLoginCubit.get(context).userLogin(
                                   email: emailController.text,
                                   password: passwordController.text,
                                 );
@@ -130,19 +131,21 @@ class SocialLoginScreen extends StatelessWidget {
             ),
           );
         },
-        listener: (BuildContext context, Object? state) {
+        listener: (BuildContext context, Object? state) async{
           if (state is SocialLoginErrorStates) {
-            showToast(state.error, ToastStates.ERROR);
+            showToast(message: state.error, states: ToastStates.ERROR);
           }
           if (state is SocialLoginSuccessStates) {
             //showToast(state.uId, ToastStates.SUCCESS);
-            CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
+            uId = state.uId; //... best way
+            await CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
               NavigateAndFinsh(context: context, widget: const SocialLayout());
             }).catchError(
               (error) {
                 print(error.toString());
               },
             );
+
           }
         },
       ),

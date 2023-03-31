@@ -5,17 +5,22 @@ import 'package:social_app/layout/social_layout.dart';
 import 'package:social_app/modules/register/cubit/cubit.dart';
 import 'package:social_app/modules/register/cubit/states.dart';
 import 'package:social_app/shared/components/components.dart';
+import 'package:social_app/shared/components/constants.dart';
+import 'package:social_app/shared/network/local/cach_helper.dart';
 
 class SocialRegisterScreen extends StatelessWidget {
-  var formKey = GlobalKey<FormState>();
-  bool? isPassword = true;
-  TextEditingController emailController = TextEditingController();
-  TextEditingController passwordController = TextEditingController();
-  TextEditingController nameController = TextEditingController();
-  TextEditingController phoneController = TextEditingController();
+  const SocialRegisterScreen({super.key});
 
+
+// todo
   @override
   Widget build(BuildContext context) {
+    var formKey = GlobalKey<FormState>();
+    bool? isPassword = true;
+    TextEditingController emailController = TextEditingController();
+    TextEditingController passwordController = TextEditingController();
+    TextEditingController nameController = TextEditingController();
+    TextEditingController phoneController = TextEditingController();
     return Scaffold(
       appBar: AppBar(),
       body: BlocProvider(
@@ -40,7 +45,7 @@ class SocialRegisterScreen extends StatelessWidget {
                           'Register now to communicate with friends',
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(color: Colors.grey),
                         ),
                         const SizedBox(
@@ -73,7 +78,7 @@ class SocialRegisterScreen extends StatelessWidget {
                             text: 'Enter your password',
                             prefixIcon: Icons.lock,
                             suffixIcon: Icons.add,
-                            isPassword: isPassword!,
+                            isPassword: isPassword,
                             iconSuffix: () {},
                             onFieldSubmitted: (value) {
                               // SocialLoginCubit.get(context).userLogin(
@@ -151,12 +156,20 @@ class SocialRegisterScreen extends StatelessWidget {
               ),
             );
           },
-          listener: (BuildContext context, Object? state) {
+          listener: (BuildContext context, Object? state)async {
             if (state is SocialCreateUserSuccessStates) {
-              NavigateAndFinsh(
-                context: context,
-                widget: const SocialLayout(),
+              uId = state.uId; //... best way
+              await CacheHelper.saveData(key: 'uId', value: state.uId).then((value) {
+                NavigateAndFinsh(context: context, widget: const SocialLayout());
+              }).catchError(
+                    (error) {
+                  debugPrint(error.toString());
+                },
               );
+
+            }
+            if (state is SocialRegisterErrorStates){
+              showToast(message: state.error, states:  ToastStates.ERROR);
             }
           },
         ),

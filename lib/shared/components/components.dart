@@ -82,8 +82,8 @@ void NavigateAndFinsh({context, widget}) => Navigator.pushAndRemoveUntil(
     ),
     (Route<dynamic> route) => false);
 
-showToast(String? message, ToastStates states) => Fluttertoast.showToast(
-    msg: message!,
+showToast({required String message,required  ToastStates states}) => Fluttertoast.showToast(
+    msg: message,
     toastLength: Toast.LENGTH_LONG,
     gravity: ToastGravity.BOTTOM,
     timeInSecForIosWeb: 1,

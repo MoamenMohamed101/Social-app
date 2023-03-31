@@ -6,10 +6,10 @@ class SocialLoginCubit extends Cubit<SocialLoginStates> {
   SocialLoginCubit() : super(SocialLoginInitialStates());
 
   static SocialLoginCubit get(context) => BlocProvider.of(context);
-
-  void userLogin({String? email, String? password}) {
+//todo
+  Future<void> userLogin({String? email, String? password}) async {
     emit(SocialLoginLoadingStates());
-    FirebaseAuth.instance
+    await FirebaseAuth.instance
         .signInWithEmailAndPassword(email: email!, password: password!)
         .then(
       (value) {

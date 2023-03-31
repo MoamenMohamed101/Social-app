@@ -24,11 +24,11 @@ class SocialCubit extends Cubit<SocialStates> {
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
  void getUserData() async{
-   uid = CacheHelper.getData(key: 'uId');
+   uId = CacheHelper.getData(key: 'uId');
     emit(SocialGetUserLoadingStates());
     await FirebaseFirestore.instance
         .collection('usersData')
-        .doc(uid)
+        .doc(uId)
         .get()
         .then((value) {
       userModel = UserModel.fromJson(value.data()!);
@@ -269,17 +269,29 @@ class SocialCubit extends Cubit<SocialStates> {
 
   // signOut
   void signOut(context) {
+    navigateTo(context: context,widget:  SocialLoginScreen());
     FirebaseAuth.instance.signOut().then((value) {
       CacheHelper.removeData('uId')!.then((value) {
-        navigateTo(context: context,widget:  SocialLoginScreen());
+       uId = null;
       });
       emit(SocialSignOutSuccessStates());
     }).catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
       emit(SocialSignOutErrorStates());
     });
   }
   void name(){
-    print('moamen');
+    debugPrint('moamen');
   }
+  // void logout(BuildContext context) {
+  //   FirebaseFirestore.instance.collection('users').doc(uId).update(
+  //     {'token': ''},
+  //   );
+  //   CacheHelper.removeData(key: 'uId');
+  //   uId = null;
+  //   users = [];
+  //   userModel = null;
+  //   emit(AppLogOutSuccessState());
+  // }
 }
+// todo: always use debugPrint

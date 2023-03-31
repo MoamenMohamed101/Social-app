@@ -15,9 +15,10 @@ void main() async {
   await Firebase.initializeApp();
   Bloc.observer = MyBlocObserver();
   Widget? widget;
-  uid = CacheHelper.getData(key: 'uId');
+  uId = await CacheHelper.getData(key: 'uId');
+  debugPrint('>>>>>>>>>>>>>>> $uId');
 
-  if (uid != null) {
+  if (uId != null) {
     widget = const SocialLayout();
   } else {
     widget = SocialLoginScreen();
@@ -26,9 +27,9 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
-  final startWidget;
+  final Widget startWidget;
 
-  const MyApp(this.startWidget);
+  const MyApp(this.startWidget, {super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,3 +51,5 @@ class MyApp extends StatelessWidget {
   }
 }
 // : if false
+// how to use todo
+// await $$ then
