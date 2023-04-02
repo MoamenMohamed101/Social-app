@@ -1,5 +1,5 @@
 class PostModel {
-  String?  name, uId, image , dataTime , text , postImage;
+  String?  name, uId, image , dataTime , text , postImage , password , phone , email , bio , cover;
 
   PostModel({
     this.name,
@@ -8,6 +8,11 @@ class PostModel {
     this.dataTime,
     this.text,
     this.postImage,
+    this.phone,
+    this.email,
+    this.bio,
+    this.password,
+    this.cover,
   });
 
   factory PostModel.fromJson(Map<String, dynamic> json) {
@@ -18,6 +23,11 @@ class PostModel {
       dataTime: json["dataTime"],
       text: json["text"],
       postImage: json["postImage"],
+      phone: json["phone"],
+      email: json["email"],
+      bio: json["bio"],
+      password: json["password"],
+      cover: json["cover"],
     );
   }
 
@@ -29,6 +39,11 @@ class PostModel {
       "dataTime": dataTime,
       "text": text,
       "postImage": postImage,
+      "phone": phone,
+      "email": email,
+      "bio": bio,
+      "password": password,
+      "cover": cover,
     };
   }
 }

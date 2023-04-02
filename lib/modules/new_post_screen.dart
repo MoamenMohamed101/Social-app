@@ -6,8 +6,9 @@ import 'package:social_app/shared/components/components.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
 class NewPostScreen extends StatelessWidget {
-    NewPostScreen({Key? key}) : super(key: key);
+  NewPostScreen({Key? key}) : super(key: key);
   var textController = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<SocialCubit, SocialStates>(
@@ -41,10 +42,11 @@ class NewPostScreen extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Column(
               children: [
-                if(state is SocialCreatePostLoadingStates)
-                  const LinearProgressIndicator()
-                else
-                  const SizedBox(height: 10,),
+                if (state is SocialCreatePostLoadingStates)
+                  const LinearProgressIndicator(),
+                const SizedBox(
+                  height: 10,
+                ),
                 Row(
                   children: const [
                     CircleAvatar(
@@ -70,7 +72,7 @@ class NewPostScreen extends StatelessWidget {
                         border: InputBorder.none),
                   ),
                 ),
-                if(cubit.createPostImage != null)
+                if (cubit.createPostImage != null)
                   Stack(
                     alignment: AlignmentDirectional.topEnd,
                     children: [
@@ -80,7 +82,8 @@ class NewPostScreen extends StatelessWidget {
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(4),
                           image: DecorationImage(
-                            image: FileImage(cubit.createPostImage!), fit: BoxFit.cover,
+                            image: FileImage(cubit.createPostImage!),
+                            fit: BoxFit.cover,
                           ),
                         ),
                       ),

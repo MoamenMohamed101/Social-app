@@ -1,74 +1,89 @@
+import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:social_app/layout/cubit/cubit.dart';
+import 'package:social_app/models/post_model.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
 
 class FeedsScreen extends StatelessWidget {
   const FeedsScreen({Key? key}) : super(key: key);
+
 // Wrap
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            Card(
-              elevation: 10.0,
-              clipBehavior: Clip.antiAliasWithSaveLayer,
-              margin: const EdgeInsets.all(8),
-              child: Stack(
-                alignment: AlignmentDirectional.bottomEnd,
-                children: const [
-                  Image(
-                    width: double.infinity,
-                    height: 200,
-                    fit: BoxFit.cover,
-                    image: NetworkImage(
-                      'https://img.freepik.com/free-photo/inspired-young-handsome-man-looking-camera-pointing-side-purple-background_141793-131010.jpg?w=1060&t=st=1679215417~exp=1679216017~hmac=448ef7412a0afb1fa99013a0c7eea86f50b5912dedc4d83bcc217c1aa54a6741',
+      body: ConditionalBuilder(
+        condition: SocialCubit.get(context).posts.isNotEmpty,
+        builder: (BuildContext context) => SingleChildScrollView(
+          physics: const BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              Card(
+                elevation: 10.0,
+                clipBehavior: Clip.antiAliasWithSaveLayer,
+                margin: const EdgeInsets.all(8),
+                child: Stack(
+                  alignment: AlignmentDirectional.bottomEnd,
+                  children: const [
+                    Image(
+                      width: double.infinity,
+                      height: 200,
+                      fit: BoxFit.cover,
+                      image: NetworkImage(
+                        'https://img.freepik.com/free-photo/inspired-young-handsome-man-looking-camera-pointing-side-purple-background_141793-131010.jpg?w=1060&t=st=1679215417~exp=1679216017~hmac=448ef7412a0afb1fa99013a0c7eea86f50b5912dedc4d83bcc217c1aa54a6741',
+                      ),
                     ),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.all(8.0),
-                    child: Text(
-                      'communicate with friends',
-                      style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w600,
-                          color: Colors.white),
+                    Padding(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text(
+                        'communicate with friends',
+                        style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.white),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            ListView.separated(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
-              itemBuilder:(context,index)=> buildItem(context),
-              itemCount: 10,
-              separatorBuilder: (BuildContext context, int index) => SizedBox(height: 8),
-            ),
-            SizedBox(height: 8,)
-          ],
+              ListView.separated(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemBuilder: (context, index) =>
+                    buildItem(SocialCubit.get(context).posts[index], context),
+                itemCount: SocialCubit.get(context).posts.length,
+                separatorBuilder: (BuildContext context, int index) =>
+                    const SizedBox(height: 8),
+              ),
+              const SizedBox(
+                height: 8,
+              )
+            ],
+          ),
+        ),
+        fallback: (BuildContext context) => const Center(
+          child: CircularProgressIndicator(),
         ),
       ),
     );
   }
 }
 
-buildItem(context) => Card(
+buildItem(PostModel postModel, context) => Card(
       elevation: 5,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: const EdgeInsets.symmetric(horizontal: 8),
       child: Padding(
         padding: const EdgeInsets.all(10.0),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Row(
               children: [
-                const CircleAvatar(
-                    radius: 25,
-                    backgroundImage: NetworkImage(
-                        'https://img.freepik.com/free-photo/angry-young-handsome-man-looking-camera-showing-empty-hand-purple-background_141793-131014.jpg?w=1060&t=st=1679217371~exp=1679217971~hmac=272c55bb53cee6dcd2e6f83fe28450e58228b8e97d7446c81ae53ae6f1169035')),
+                CircleAvatar(
+                  radius: 25,
+                  backgroundImage: NetworkImage('${SocialCubit.get(context).userModel!.image}'),
+                ),
                 const SizedBox(
                   width: 15,
                 ),
@@ -77,22 +92,22 @@ buildItem(context) => Card(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
-                        children: const [
+                        children: [
                           Text(
-                            'Moamen Mohamed',
-                            style: TextStyle(height: 1.4),
+                            '${postModel.name}',
+                            style: const TextStyle(height: 1.4),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 5,
                           ),
-                          Icon(
+                          const Icon(
                             Icons.check_circle,
                             color: defaultColor,
                             size: 16,
                           )
                         ],
                       ),
-                      Text('January 21, 2021 at 11:00 pm',
+                      Text('${postModel.dataTime}',
                           style: Theme.of(context)
                               .textTheme
                               .caption!
@@ -109,7 +124,7 @@ buildItem(context) => Card(
                     Icons.more_horiz,
                     size: 16,
                   ),
-                )
+                ),
               ],
             ),
             Padding(
@@ -120,66 +135,71 @@ buildItem(context) => Card(
                 width: double.infinity,
               ),
             ),
-            const Text(
-              'Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.',
-              style: TextStyle(
+            Text(
+              '${postModel.text}',
+              style: const TextStyle(
                 height: 1.3,
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
+
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.only(bottom: 10, top: 5),
-              child: SizedBox(
-                width: double.infinity,
-                child: Wrap(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(end: 6),
-                      child: SizedBox(
-                        height: 25,
-                        child: MaterialButton(
-                          minWidth: 1,
-                          padding: EdgeInsets.zero,
-                          onPressed: () {},
-                          child: const Text(
-                            '#software',
-                            style: TextStyle(color: defaultColor),
-                          ),
+            // Padding(
+            //   padding: const EdgeInsets.only(bottom: 10, top: 5),
+            //   child: SizedBox(
+            //     width: double.infinity,
+            //     child: Wrap(
+            //       children: [
+            //         Padding(
+            //           padding: const EdgeInsetsDirectional.only(end: 6),
+            //           child: SizedBox(
+            //             height: 25,
+            //             child: MaterialButton(
+            //               minWidth: 1,
+            //               padding: EdgeInsets.zero,
+            //               onPressed: () {},
+            //               child: const Text(
+            //                 '#software',
+            //                 style: TextStyle(color: defaultColor),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsetsDirectional.only(end: 6),
+            //           child: SizedBox(
+            //             height: 25,
+            //             child: MaterialButton(
+            //               minWidth: 1,
+            //               padding: EdgeInsets.zero,
+            //               onPressed: () {},
+            //               child: const Text(
+            //                 '#flutter',
+            //                 style: TextStyle(color: defaultColor),
+            //               ),
+            //             ),
+            //           ),
+            //         ),
+            //       ],
+            //     ),
+            //   ),
+            // ),
+            if (postModel.postImage != null)
+              Padding(
+                padding: const EdgeInsetsDirectional.only(top: 15),
+                child: Container(
+                  height: 140,
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(4),
+                    image: DecorationImage(
+                        image: NetworkImage(
+                          '${postModel.postImage}',
                         ),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsetsDirectional.only(end: 6),
-                      child: SizedBox(
-                        height: 25,
-                        child: MaterialButton(
-                          minWidth: 1,
-                          padding: EdgeInsets.zero,
-                          onPressed: () {},
-                          child: const Text(
-                            '#flutter',
-                            style: TextStyle(color: defaultColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+                        fit: BoxFit.cover),
+                  ),
                 ),
               ),
-            ),
-            Container(
-              height: 140,
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(4),
-                image: const DecorationImage(
-                    image: NetworkImage(
-                      'https://img.freepik.com/free-photo/inspired-young-handsome-man-looking-camera-pointing-side-purple-background_141793-131010.jpg?w=1060&t=st=1679215417~exp=1679216017~hmac=448ef7412a0afb1fa99013a0c7eea86f50b5912dedc4d83bcc217c1aa54a6741',
-                    ),
-                    fit: BoxFit.cover),
-              ),
-            ),
             Padding(
               padding: const EdgeInsets.symmetric(vertical: 5),
               child: Row(
@@ -199,7 +219,7 @@ buildItem(context) => Card(
                               width: 5,
                             ),
                             Text(
-                              '120',
+                              '0',
                               style: Theme.of(context)
                                   .textTheme
                                   .caption!
@@ -227,10 +247,10 @@ buildItem(context) => Card(
                               width: 5,
                             ),
                             Text(
-                              '120 comment',
+                              '0 comment',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(fontSize: 16),
                             ),
                           ],
@@ -256,10 +276,12 @@ buildItem(context) => Card(
                   child: InkWell(
                     child: Row(
                       children: [
-                        const CircleAvatar(
-                            radius: 18,
-                            backgroundImage: NetworkImage(
-                                'https://img.freepik.com/free-photo/angry-young-handsome-man-looking-camera-showing-empty-hand-purple-background_141793-131014.jpg?w=1060&t=st=1679217371~exp=1679217971~hmac=272c55bb53cee6dcd2e6f83fe28450e58228b8e97d7446c81ae53ae6f1169035')),
+                        CircleAvatar(
+                          radius: 18,
+                          backgroundImage: NetworkImage(
+                            '${SocialCubit.get(context).userModel!.image}',
+                          ),
+                        ),
                         const SizedBox(
                           width: 15,
                         ),
@@ -288,7 +310,7 @@ buildItem(context) => Card(
                         width: 5,
                       ),
                       Text(
-                        '120 Like',
+                        '0 Like',
                         style: Theme.of(context)
                             .textTheme
                             .caption!

@@ -41,7 +41,7 @@ class SocialLoginScreen extends StatelessWidget {
                           'Login now to communicate with friends',
                           style: Theme.of(context)
                               .textTheme
-                              .bodyText1!
+                              .bodyLarge!
                               .copyWith(color: Colors.grey),
                         ),
                         const SizedBox(
@@ -116,6 +116,7 @@ class SocialLoginScreen extends StatelessWidget {
                               onPressed: () {
                                 navigateTo(
                                   context: context,
+                                  /// Todo : make a widget for register screen
                                   widget: SocialRegisterScreen(),
                                 );
                               },

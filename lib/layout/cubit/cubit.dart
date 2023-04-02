@@ -23,8 +23,10 @@ class SocialCubit extends Cubit<SocialStates> {
 
   static SocialCubit get(context) => BlocProvider.of(context);
   UserModel? userModel;
- void getUserData() async{
-   uId = CacheHelper.getData(key: 'uId');
+
+  // get user data from firebase firestore and save it in userModel variable to use it in all app screens
+  void getUserData() async {
+    uId = CacheHelper.getData(key: 'uId');
     emit(SocialGetUserLoadingStates());
     await FirebaseFirestore.instance
         .collection('usersData')
@@ -69,6 +71,7 @@ class SocialCubit extends Cubit<SocialStates> {
   File? profileImage;
   var picker = ImagePicker();
 
+// get profile image from gallery
   Future<void> getProfileImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -82,6 +85,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
   File? coverImage;
 
+// get cover image from gallery
   Future<void> getCoverImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -93,6 +97,7 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
+// upload profile image to firebase storage and get url
   void uploadProfileImage({
     @required String? name,
     @required String? phone,
@@ -123,6 +128,7 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
+// upload cover image to firebase storage and get url
   void uploadCoverImage({
     @required String? name,
     @required String? phone,
@@ -168,7 +174,7 @@ class SocialCubit extends Cubit<SocialStates> {
   //     updateUserData(name: name, phone: phone, bio: bio);
   //   }
   // }
-
+// update user data in firebase database and cache helper data
   updateUserData({
     @required String? name,
     @required String? phone,
@@ -202,10 +208,14 @@ class SocialCubit extends Cubit<SocialStates> {
   }
 
   File? createPostImage;
-  void removePostImage(){
+
+  // remove post image from create post screen
+  void removePostImage() {
     createPostImage = null;
     emit(SocialRemovePostImageSuccessStates());
   }
+
+  // get post image from gallery
   Future<void> getPostImage() async {
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
     if (pickedFile != null) {
@@ -217,6 +227,7 @@ class SocialCubit extends Cubit<SocialStates> {
     }
   }
 
+// upload post image to firebase storage and get image url and send it to create post function to create post with image
   void uploadPostImage({
     @required String? text,
     @required String? dateTime,
@@ -240,6 +251,7 @@ class SocialCubit extends Cubit<SocialStates> {
     });
   }
 
+  // create post function with image and text and date time and user data and post id
   createPost({
     @required String? dateTime,
     @required String? text,
@@ -247,12 +259,17 @@ class SocialCubit extends Cubit<SocialStates> {
   }) {
     emit(SocialCreatePostLoadingStates());
     PostModel? model = PostModel(
-        name: userModel!.name,
-        dataTime: dateTime,
-        image: userModel!.image,
-        uId: userModel!.uId,
-        postImage: postImage ?? '',
-        text: text
+      name: userModel!.name,
+      dataTime: dateTime,
+      image: userModel!.image,
+      uId: userModel!.uId,
+      postImage: postImage ?? '',
+      text: text,
+      password: userModel!.password,
+      bio: userModel!.bio,
+      email: userModel!.email,
+      phone: userModel!.phone,
+      cover: userModel!.cover,
     );
     FirebaseFirestore.instance
         .collection('posts')
@@ -260,19 +277,19 @@ class SocialCubit extends Cubit<SocialStates> {
       model.toJson(),
     )
         .then((value) {
-          emit(SocialCreatePostSuccessStates());
+      emit(SocialCreatePostSuccessStates());
     }).catchError((error) {
       print(error.toString());
       emit(SocialCreatePostErrorStates());
     });
   }
 
-  // signOut
+  // signOut function
   void signOut(context) {
-    navigateTo(context: context,widget:  SocialLoginScreen());
+    navigateTo(context: context, widget: SocialLoginScreen());
     FirebaseAuth.instance.signOut().then((value) {
       CacheHelper.removeData('uId')!.then((value) {
-       uId = null;
+        uId = null;
       });
       emit(SocialSignOutSuccessStates());
     }).catchError((error) {
@@ -280,9 +297,7 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialSignOutErrorStates());
     });
   }
-  void name(){
-    debugPrint('moamen');
-  }
+
   // void logout(BuildContext context) {
   //   FirebaseFirestore.instance.collection('users').doc(uId).update(
   //     {'token': ''},
@@ -293,5 +308,21 @@ class SocialCubit extends Cubit<SocialStates> {
   //   userModel = null;
   //   emit(AppLogOutSuccessState());
   // }
+  List<PostModel> posts = [];
+
+  getPosts() {
+    emit(SocialGetPostsLoadingStates());
+    FirebaseFirestore.instance
+        .collection('posts')
+        .get()
+        .then((value) {
+      value.docs.forEach((element) {
+        posts.add(PostModel.fromJson(element.data()));
+      });
+      emit(SocialGetPostsSuccessStates());
+    })
+        .catchError((error) {
+      emit(SocialGetPostsErrorStates(error.toString()));
+    });
+  }
 }
-// todo: always use debugPrint
