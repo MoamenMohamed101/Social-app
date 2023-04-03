@@ -1,3 +1,4 @@
+import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -301,16 +302,20 @@ class SocialCubit extends Cubit<SocialStates> {
   // }
   List<PostModel> posts = [];
   List<String> postId = [];
+  List<int> numOfLikes = [];
 
   getPosts() {
     FirebaseFirestore.instance.collection('posts').get().then((value) {
       for (var element in value.docs) {
-        postId.add(element.id);
-        posts.add(
-          PostModel.fromJson(
-            element.data(),
-          ),
-        );
+        element.reference
+            .collection('likes')
+            .get()
+            .then((value) {
+              numOfLikes.add(value.docs.length);
+          postId.add(element.id);
+          posts.add(PostModel.fromJson(element.data()));
+        })
+            .catchError((error) {});
       }
       emit(SocialGetPostsSuccessStates());
     }).catchError((error) {

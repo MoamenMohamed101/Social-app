@@ -227,7 +227,7 @@ buildItem(PostModel postModel, context, index) => Card(
                               width: 5,
                             ),
                             Text(
-                              '0',
+                              '${SocialCubit.get(context).numOfLikes[index]}',
                               style: Theme.of(context)
                                   .textTheme
                                   .bodySmall!
