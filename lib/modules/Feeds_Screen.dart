@@ -1,6 +1,8 @@
 import 'package:conditional_builder_null_safety/conditional_builder_null_safety.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:social_app/layout/cubit/cubit.dart';
+import 'package:social_app/layout/cubit/states.dart';
 import 'package:social_app/models/post_model.dart';
 import 'package:social_app/shared/components/constants.dart';
 import 'package:social_app/shared/styles/icon_broken.dart';
@@ -11,60 +13,65 @@ class FeedsScreen extends StatelessWidget {
 // Wrap
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: ConditionalBuilder(
-        condition: SocialCubit.get(context).posts.isNotEmpty,
-        builder: (BuildContext context) => SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          child: Column(
-            children: [
-              Card(
-                elevation: 10.0,
-                clipBehavior: Clip.antiAliasWithSaveLayer,
-                margin: const EdgeInsets.all(8),
-                child: Stack(
-                  alignment: AlignmentDirectional.bottomEnd,
-                  children: const [
-                    Image(
-                      width: double.infinity,
-                      height: 200,
-                      fit: BoxFit.cover,
-                      image: NetworkImage(
-                        'https://img.freepik.com/free-photo/inspired-young-handsome-man-looking-camera-pointing-side-purple-background_141793-131010.jpg?w=1060&t=st=1679215417~exp=1679216017~hmac=448ef7412a0afb1fa99013a0c7eea86f50b5912dedc4d83bcc217c1aa54a6741',
-                      ),
+    return BlocConsumer<SocialCubit , SocialStates>(
+      builder: (BuildContext context, state) {
+        return Scaffold(
+          body: ConditionalBuilder(
+            condition: SocialCubit.get(context).posts.isNotEmpty,
+            builder: (BuildContext context) => SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              child: Column(
+                children: [
+                  Card(
+                    elevation: 10.0,
+                    clipBehavior: Clip.antiAliasWithSaveLayer,
+                    margin: const EdgeInsets.all(8),
+                    child: Stack(
+                      alignment: AlignmentDirectional.bottomEnd,
+                      children: const [
+                        Image(
+                          width: double.infinity,
+                          height: 200,
+                          fit: BoxFit.cover,
+                          image: NetworkImage(
+                            'https://img.freepik.com/free-photo/inspired-young-handsome-man-looking-camera-pointing-side-purple-background_141793-131010.jpg?w=1060&t=st=1679215417~exp=1679216017~hmac=448ef7412a0afb1fa99013a0c7eea86f50b5912dedc4d83bcc217c1aa54a6741',
+                          ),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(8.0),
+                          child: Text(
+                            'communicate with friends',
+                            style: TextStyle(
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600,
+                                color: Colors.white),
+                          ),
+                        ),
+                      ],
                     ),
-                    Padding(
-                      padding: EdgeInsets.all(8.0),
-                      child: Text(
-                        'communicate with friends',
-                        style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.white),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              ListView.separated(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemBuilder: (context, index) =>
-                    buildItem(SocialCubit.get(context).posts[index], context),
-                itemCount: SocialCubit.get(context).posts.length,
-                separatorBuilder: (BuildContext context, int index) =>
+                  ),
+                  ListView.separated(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemBuilder: (context, index) =>
+                        buildItem(SocialCubit.get(context).posts[index], context),
+                    itemCount: SocialCubit.get(context).posts.length,
+                    separatorBuilder: (BuildContext context, int index) =>
                     const SizedBox(height: 8),
+                  ),
+                  const SizedBox(
+                    height: 8,
+                  )
+                ],
               ),
-              const SizedBox(
-                height: 8,
-              )
-            ],
+            ),
+            fallback: (BuildContext context) => const Center(
+              child: CircularProgressIndicator(),
+            ),
           ),
-        ),
-        fallback: (BuildContext context) => const Center(
-          child: CircularProgressIndicator(),
-        ),
-      ),
+        );
+      },
+      listener: (BuildContext context, Object? state) {  },
     );
   }
 }
@@ -289,7 +296,7 @@ buildItem(PostModel postModel, context) => Card(
                           'write a comment ........',
                           style: Theme.of(context)
                               .textTheme
-                              .caption!
+                              .bodySmall!
                               .copyWith(height: 1.4),
                         ),
                       ],
@@ -313,7 +320,7 @@ buildItem(PostModel postModel, context) => Card(
                         '0 Like',
                         style: Theme.of(context)
                             .textTheme
-                            .caption!
+                            .bodySmall!
                             .copyWith(fontSize: 16),
                       ),
                     ],
