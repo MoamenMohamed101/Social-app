@@ -36,7 +36,7 @@ class SocialCubit extends Cubit<SocialStates> {
       userModel = UserModel.fromJson(value.data()!);
       emit(SocialGetUserSuccessStates());
     }).catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
       emit(SocialGetUserErrorStates(error.toString()));
     });
   }
@@ -78,7 +78,7 @@ class SocialCubit extends Cubit<SocialStates> {
       profileImage = File(pickedFile.path);
       emit(SocialProfileImagePickedSuccessStates());
     } else {
-      print('No image selected');
+      debugPrint('No image selected');
       emit(SocialProfileImagePickedErrorStates());
     }
   }
@@ -92,7 +92,7 @@ class SocialCubit extends Cubit<SocialStates> {
       coverImage = File(pickedFile.path);
       emit(SocialCoverImagePickedSuccessStates());
     } else {
-      print('No image selected');
+      debugPrint('No image selected');
       emit(SocialCoverImagePickedErrorStates());
     }
   }
@@ -106,14 +106,11 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialUserUpdateLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri
-        .parse(profileImage!.path)
-        .pathSegments
-        .last}')
+        .child('users/${Uri.parse(profileImage!.path).pathSegments.last}')
         .putFile(profileImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
-        print(value);
+        debugPrint(value);
         updateUserData(
           name: name,
           phone: phone,
@@ -137,10 +134,7 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialUserUpdateLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri
-        .parse(coverImage!.path)
-        .pathSegments
-        .last}')
+        .child('users/${Uri.parse(coverImage!.path).pathSegments.last}')
         .putFile(coverImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -197,12 +191,12 @@ class SocialCubit extends Cubit<SocialStates> {
         .collection('usersData')
         .doc(model.uId)
         .update(
-      model.toJson(),
-    )
+          model.toJson(),
+        )
         .then((value) {
       getUserData();
     }).catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
       emit(SocialUserUpdateErrorStates());
     });
   }
@@ -222,7 +216,7 @@ class SocialCubit extends Cubit<SocialStates> {
       createPostImage = File(pickedFile.path);
       emit(SocialCreateImagePickedSuccessStates());
     } else {
-      print('No image selected');
+      debugPrint('No image selected');
       emit(SocialCreateImagePickedErrorStates());
     }
   }
@@ -235,10 +229,7 @@ class SocialCubit extends Cubit<SocialStates> {
     emit(SocialCreatePostLoadingStates());
     firebase_storage.FirebaseStorage.instance
         .ref()
-        .child('users/${Uri
-        .parse(createPostImage!.path)
-        .pathSegments
-        .last}')
+        .child('users/${Uri.parse(createPostImage!.path).pathSegments.last}')
         .putFile(createPostImage!)
         .then((value) {
       value.ref.getDownloadURL().then((value) {
@@ -274,12 +265,12 @@ class SocialCubit extends Cubit<SocialStates> {
     FirebaseFirestore.instance
         .collection('posts')
         .add(
-      model.toJson(),
-    )
+          model.toJson(),
+        )
         .then((value) {
       emit(SocialCreatePostSuccessStates());
     }).catchError((error) {
-      print(error.toString());
+      debugPrint(error.toString());
       emit(SocialCreatePostErrorStates());
     });
   }
@@ -309,19 +300,38 @@ class SocialCubit extends Cubit<SocialStates> {
   //   emit(AppLogOutSuccessState());
   // }
   List<PostModel> posts = [];
+  List<String> postId = [];
 
   getPosts() {
-    FirebaseFirestore.instance
-        .collection('posts')
-        .get()
-        .then((value) {
+    FirebaseFirestore.instance.collection('posts').get().then((value) {
       for (var element in value.docs) {
-        posts.add(PostModel.fromJson(element.data()));
+        postId.add(element.id);
+        posts.add(
+          PostModel.fromJson(
+            element.data(),
+          ),
+        );
       }
       emit(SocialGetPostsSuccessStates());
-    })
-        .catchError((error) {
-      emit(SocialGetPostsErrorStates(error.toString()));
+    }).catchError((error) {
+      emit(
+        SocialGetPostsErrorStates(
+          error.toString(),
+        ),
+      );
+    });
+  }
+
+  void likePost(String postId) {
+    FirebaseFirestore.instance
+        .collection('posts')
+        .doc(postId)
+        .collection('likes')
+        .doc(userModel!.uId)
+        .set({'likes': true}).then((value) {
+      emit(SocialLikePostSuccessStates());
+    }).catchError((error) {
+      emit(SocialLikePostErrorStates(error.toString()));
     });
   }
 }

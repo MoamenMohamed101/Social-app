@@ -13,7 +13,7 @@ class FeedsScreen extends StatelessWidget {
 // Wrap
   @override
   Widget build(BuildContext context) {
-    return BlocConsumer<SocialCubit , SocialStates>(
+    return BlocConsumer<SocialCubit, SocialStates>(
       builder: (BuildContext context, state) {
         return Scaffold(
           body: ConditionalBuilder(
@@ -53,11 +53,11 @@ class FeedsScreen extends StatelessWidget {
                   ListView.separated(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
-                    itemBuilder: (context, index) =>
-                        buildItem(SocialCubit.get(context).posts[index], context),
+                    itemBuilder: (context, index) => buildItem(
+                        SocialCubit.get(context).posts[index], context, index),
                     itemCount: SocialCubit.get(context).posts.length,
                     separatorBuilder: (BuildContext context, int index) =>
-                    const SizedBox(height: 8),
+                        const SizedBox(height: 8),
                   ),
                   const SizedBox(
                     height: 8,
@@ -71,12 +71,12 @@ class FeedsScreen extends StatelessWidget {
           ),
         );
       },
-      listener: (BuildContext context, Object? state) {  },
+      listener: (BuildContext context, Object? state) {},
     );
   }
 }
 
-buildItem(PostModel postModel, context) => Card(
+buildItem(PostModel postModel, context, index) => Card(
       elevation: 5,
       clipBehavior: Clip.antiAliasWithSaveLayer,
       margin: const EdgeInsets.symmetric(horizontal: 8),
@@ -89,7 +89,8 @@ buildItem(PostModel postModel, context) => Card(
               children: [
                 CircleAvatar(
                   radius: 25,
-                  backgroundImage: NetworkImage('${SocialCubit.get(context).userModel!.image}'),
+                  backgroundImage: NetworkImage(
+                      '${SocialCubit.get(context).userModel!.image}'),
                 ),
                 const SizedBox(
                   width: 15,
@@ -117,7 +118,7 @@ buildItem(PostModel postModel, context) => Card(
                       Text('${postModel.dataTime}',
                           style: Theme.of(context)
                               .textTheme
-                              .caption!
+                              .bodySmall!
                               .copyWith(height: 1.4)),
                     ],
                   ),
@@ -148,7 +149,6 @@ buildItem(PostModel postModel, context) => Card(
                 height: 1.3,
                 fontWeight: FontWeight.w600,
                 fontSize: 14,
-
               ),
             ),
             // Padding(
@@ -200,10 +200,11 @@ buildItem(PostModel postModel, context) => Card(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(4),
                     image: DecorationImage(
-                        image: NetworkImage(
-                          '${postModel.postImage}',
-                        ),
-                        fit: BoxFit.cover),
+                      image: NetworkImage(
+                        '${postModel.postImage}',
+                      ),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -229,7 +230,7 @@ buildItem(PostModel postModel, context) => Card(
                               '0',
                               style: Theme.of(context)
                                   .textTheme
-                                  .caption!
+                                  .bodySmall!
                                   .copyWith(fontSize: 16),
                             ),
                           ],
@@ -325,7 +326,11 @@ buildItem(PostModel postModel, context) => Card(
                       ),
                     ],
                   ),
-                  onTap: () {},
+                  onTap: () {
+                    SocialCubit.get(context).likePost(
+                      SocialCubit.get(context).postId[index],
+                    );
+                  },
                 ),
               ],
             ),

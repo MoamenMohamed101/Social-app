@@ -65,7 +65,8 @@ class SocialRegisterCubit extends Cubit<SocialRegisterStates> {
     );
     FirebaseFirestore.instance
         .collection('usersData')
-        .doc(uId)
+    /// todo change userModel.name to uId if there is any prpolem
+        .doc(userModel.name)
         .set(
           userModel.toJson(),
         ).then((value) {
