@@ -307,15 +307,11 @@ class SocialCubit extends Cubit<SocialStates> {
   getPosts() {
     FirebaseFirestore.instance.collection('posts').get().then((value) {
       for (var element in value.docs) {
-        element.reference
-            .collection('likes')
-            .get()
-            .then((value) {
-              numOfLikes.add(value.docs.length);
-          postId.add(element.id);
+        element.reference.collection('likes').get().then((value) {
           posts.add(PostModel.fromJson(element.data()));
-        })
-            .catchError((error) {});
+          numOfLikes.add(value.docs.length);
+          postId.add(element.id);
+        });
       }
       emit(SocialGetPostsSuccessStates());
     }).catchError((error) {
@@ -337,6 +333,25 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialLikePostSuccessStates());
     }).catchError((error) {
       emit(SocialLikePostErrorStates(error.toString()));
+    });
+  }
+
+  List<UserModel> users = [];
+
+  void getUsers() {
+    FirebaseFirestore.instance.collection('usersData').get().then((value) {
+      for (var element in value.docs) {
+        users.add(
+          UserModel.fromJson(element.data()),
+        );
+      }
+      emit(SocialGetAllUsersSuccessStates());
+    }).catchError((error) {
+      emit(
+        SocialGetAllUsersErrorStates(
+          error.toString(),
+        ),
+      );
     });
   }
 }
