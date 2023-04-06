@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       providers: [
         BlocProvider(
           create: (context) {
-            return SocialCubit()..getUserData()..getPosts()..getUsers();
+            return SocialCubit()..getUserData()..getPosts();
           },
         ),
       ],

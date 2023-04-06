@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -60,7 +59,8 @@ class SocialCubit extends Cubit<SocialStates> {
     const SettingsScreen(),
   ];
 
-  void changeBottomNav(int? index) {
+  void changeBottomNav(int? index){
+    if (index == 1) getUsers();
     if (index == 2) {
       emit(SocialNewPost());
     } else {
@@ -68,7 +68,8 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialChangeBottomNav());
     }
   }
-
+// SocialNewPost 2
+  // SocialChangeBottomNav else
   File? profileImage;
   var picker = ImagePicker();
 
@@ -303,10 +304,12 @@ class SocialCubit extends Cubit<SocialStates> {
   List<PostModel> posts = [];
   List<String> postId = [];
   List<int> numOfLikes = [];
+
 // get all posts from firebase database and add it to posts list and add post id to postId list and add number of likes to numOfLikes list (chat gpt)
   Future<void> getPosts() async {
     try {
-      var postsSnap = await FirebaseFirestore.instance.collection('posts').get();
+      var postsSnap =
+          await FirebaseFirestore.instance.collection('posts').get();
       var postsRefList = postsSnap.docs;
       for (var postRef in postsRefList) {
         var postSnap = await postRef.reference.get();
@@ -342,8 +345,9 @@ class SocialCubit extends Cubit<SocialStates> {
 
   List<UserModel> users = [];
 
-  void getUsers() {
-    FirebaseFirestore.instance.collection('usersData').get().then((value) {
+  void getUsers() async{
+    users = [];
+    await FirebaseFirestore.instance.collection('usersData').get().then((value) {
       for (var element in value.docs) {
         users.add(
           UserModel.fromJson(element.data()),
