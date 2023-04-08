@@ -80,3 +80,11 @@ class SocialCreateImagePickedErrorStates extends SocialStates {}
 class SocialSignOutSuccessStates extends SocialStates {}
 
 class SocialSignOutErrorStates extends SocialStates {}
+
+class SocialSendMessagesSuccessStates extends SocialStates {}
+
+class SocialSEndMessagesErrorStates extends SocialStates {}
+
+class SocialGetMessagesSuccessStates extends SocialStates {}
+
+class SocialGetMessagesErrorStates extends SocialStates {}
