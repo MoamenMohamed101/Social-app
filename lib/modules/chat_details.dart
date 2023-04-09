@@ -43,6 +43,7 @@ class ChatScreenDetails extends StatelessWidget {
                     children: [
                       Expanded(
                         child: ListView.separated(
+                          physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             var messages = SocialCubit.get(context).messages[index];
                             if(SocialCubit.get(context).userModel!.uId == messages.senderId) {
@@ -94,7 +95,7 @@ class ChatScreenDetails extends StatelessWidget {
                             )
                           ],
                         ),
-                      )
+                      ),
                     ],
                   ),
                 ),
