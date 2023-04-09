@@ -376,7 +376,7 @@ class SocialCubit extends Cubit<SocialStates> {
         text: text,
         receiverId: receiverId,
         senderId: userModel!.uId,
-        dataTime: dataTime);
+        dateTime: dataTime);
     FirebaseFirestore.instance
         .collection('usersData')
         .doc(userModel!.uId)
@@ -400,6 +400,31 @@ class SocialCubit extends Cubit<SocialStates> {
       emit(SocialSendMessagesSuccessStates());
     }).catchError((error) {
       emit(SocialSEndMessagesErrorStates());
+    });
+  }
+
+// get messages from firebase database and add it to messages list
+  // why i use listen here because i want to get messages in real time
+  // why list is empty
+  List<MessageModel> messages = [];
+
+  getMessages({required String receiverId}) {
+    FirebaseFirestore.instance
+        .collection('usersData')
+        .doc(userModel!.uId)
+        .collection('chats')
+        .doc(receiverId)
+        .collection('messages')
+        .orderBy('dateTime')
+        .snapshots()
+        .listen((event) {
+      messages = [];
+      for (var element in event.docs) {
+        //print(event.docs[0].data()['email']);
+        messages.add(MessageModel.fromJson(element.data()));
+      }
+      print(receiverId);
+      emit(SocialGetMessagesSuccessStates());
     });
   }
 }

@@ -1,11 +1,11 @@
 class MessageModel {
-  String? senderId, receiverId, dataTime, text;
+  String? text, senderId, receiverId, dateTime;
 
   MessageModel({
     this.text,
     this.senderId,
     this.receiverId,
-    this.dataTime,
+    this.dateTime,
   });
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
@@ -13,16 +13,16 @@ class MessageModel {
       text: json["text"],
       senderId: json["senderId"],
       receiverId: json["receiverId"],
-      dataTime: json["dataTime"],
+      dateTime: json["dateTime"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "email": text,
-      "password": senderId,
-      "phone": receiverId,
-      "dataTime": dataTime,
+      "text": text,
+      "senderId": senderId,
+      "receiverId": receiverId,
+      "dateTime": dateTime,
     };
   }
 }
