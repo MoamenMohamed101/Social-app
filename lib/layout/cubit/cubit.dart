@@ -308,6 +308,7 @@ class SocialCubit extends Cubit<SocialStates> {
 
 // get all posts from firebase database and add it to posts list and add post id to postId list and add number of likes to numOfLikes list (chat gpt)
   Future<void> getPosts() async {
+    posts = [];
     try {
       var postsSnap =
           await FirebaseFirestore.instance.collection('posts').get();
