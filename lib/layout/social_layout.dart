@@ -22,17 +22,11 @@ class SocialLayout extends StatelessWidget {
             title: Text(
               cubit.titles[cubit.currentIndex!],
             ),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  SocialCubit.get(context).signOut(context);
-                },
-                icon: const Icon(IconBroken.Notification),
-              ),
-              IconButton(
-                onPressed: () {},
-                icon: const Icon(IconBroken.Search),
-              ),
+            actions: const [
+              Icon(IconBroken.Notification),
+              SizedBox(width: 20,),
+              Icon(IconBroken.Search),
+              SizedBox(width: 20,)
             ],
           ),
           body: cubit.screens[cubit.currentIndex!],
@@ -48,8 +42,8 @@ class SocialLayout extends StatelessWidget {
                   icon: Icon(IconBroken.Chat), label: 'Chats'),
               BottomNavigationBarItem(
                   icon: Icon(IconBroken.Paper_Upload), label: 'Posts'),
-              BottomNavigationBarItem(
-                  icon: Icon(IconBroken.Location), label: 'Users'),
+              // BottomNavigationBarItem(
+              //     icon: Icon(IconBroken.Location), label: 'Users'),
               BottomNavigationBarItem(
                   icon: Icon(IconBroken.Setting), label: 'Settings'),
             ],

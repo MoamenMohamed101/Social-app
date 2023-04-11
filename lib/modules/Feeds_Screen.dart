@@ -34,7 +34,7 @@ class FeedsScreen extends StatelessWidget {
                           height: 200,
                           fit: BoxFit.cover,
                           image: NetworkImage(
-                            'https://img.freepik.com/free-photo/inspired-young-handsome-man-looking-camera-pointing-side-purple-background_141793-131010.jpg?w=1060&t=st=1679215417~exp=1679216017~hmac=448ef7412a0afb1fa99013a0c7eea86f50b5912dedc4d83bcc217c1aa54a6741',
+                            'https://img.freepik.com/free-vector/people-business-work_24908-57225.jpg?w=826&t=st=1681191290~exp=1681191890~hmac=13799c70ff7ede03efad959a078d0c8d7a90a295290738a3ece2bb27c3e8e1a8',
                           ),
                         ),
                         Padding(
@@ -65,7 +65,7 @@ class FeedsScreen extends StatelessWidget {
                 ],
               ),
             ),
-            fallback: (BuildContext context) => const Center(
+            fallback: (BuildContext context) => Center(
               child: CircularProgressIndicator(),
             ),
           ),

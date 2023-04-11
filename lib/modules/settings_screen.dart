@@ -200,11 +200,14 @@ class SettingsScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
-                      OutlinedButton(
-                        onPressed: () {
-                          SocialCubit.get(context).signOut(context);
-                        },
-                        child: const Text('Log Out'),
+                      Container(
+                        width: double.infinity,
+                        child: OutlinedButton(
+                          onPressed: () {
+                            SocialCubit.get(context).signOut(context);
+                          },
+                          child: const Text('Log Out'),
+                        ),
                       ),
                     ],
                   ),

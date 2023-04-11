@@ -52,7 +52,7 @@ class NewPostScreen extends StatelessWidget {
                     CircleAvatar(
                         radius: 25,
                         backgroundImage: NetworkImage(
-                            'https://img.freepik.com/free-photo/angry-young-handsome-man-looking-camera-showing-empty-hand-purple-background_141793-131014.jpg?w=1060&t=st=1679217371~exp=1679217971~hmac=272c55bb53cee6dcd2e6f83fe28450e58228b8e97d7446c81ae53ae6f1169035')),
+                            'https://img.freepik.com/free-vector/people-business-work_24908-57225.jpg?w=826&t=st=1681191290~exp=1681191890~hmac=13799c70ff7ede03efad959a078d0c8d7a90a295290738a3ece2bb27c3e8e1a8')),
                     SizedBox(
                       width: 15,
                     ),
